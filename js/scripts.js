@@ -10,7 +10,7 @@
 window.addEventListener('DOMContentLoaded', event => {
 
     // Navbar shrink function
-    var navbarShrink = function () {
+    const navbarShrink = function () {
         const navbarCollapsible = document.body.querySelector('#mainNav');
         if (!navbarCollapsible) {
             return;
@@ -36,9 +36,7 @@ window.addEventListener('DOMContentLoaded', event => {
             target: '#mainNav', rootMargin: '0px 0px -40%',
         });
     }
-    ;
-
-    // Collapse responsive navbar when toggler is visible
+    
     const navbarToggler = document.body.querySelector('.navbar-toggler');
     const responsiveNavItems = [].slice.call(document.querySelectorAll('#navbarResponsive .nav-link'));
     responsiveNavItems.map(function (responsiveNavItem) {
@@ -51,7 +49,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-var fileDetails = null;
+let fileDetails = null;
 
 function openFilePicker() {
     const inputElement = document.createElement('input');
@@ -84,6 +82,7 @@ function setFileContent() {
     const inputElement = document.getElementById('groupInput');
     const groupSizeParagraph = document.getElementById('group-size');
     const totalCompleteGroups = document.getElementById('total-complete-groups');
+    const extraGroup = document.getElementById('extra-group');
 
     // get total row - 1 from file
     let totalRow = 0;
@@ -96,7 +95,7 @@ function setFileContent() {
         totalRow = range.e.r;
     };
     reader.readAsArrayBuffer(fileDetails);
-    
+
 
     inputElement.addEventListener('input', function (event) {
         const inputValue = event.target.value;
@@ -104,6 +103,13 @@ function setFileContent() {
         if (parsed > 0) {
             groupSizeParagraph.textContent = inputValue;
             totalCompleteGroups.textContent = Math.floor(totalRow / inputValue);
+            if (totalRow % inputValue === 0) {
+                extraGroup.classList.add("visually-hidden");
+            } else {
+                extraGroup.classList.remove("visually-hidden");
+                extraGroup.textContent = ` and 1 with size ${totalRow % inputValue}`;
+            }
+
         } else {
             inputElement.value = 1;
         }
@@ -117,3 +123,5 @@ function removeFile() {
     fileDetails = null;
     document.getElementById("page-top").scrollIntoView({behavior: "smooth", block: "start"});
 }
+
+function createGroups(){}
